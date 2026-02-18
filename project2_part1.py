@@ -2,6 +2,7 @@
 # Hyeonseo Lee, Bri Gonzalez, Kian Jennings
 
 import sympy
+import math
 
 # ==============================================
 # Key Generation
@@ -15,6 +16,10 @@ def keygen():
     n = p * q
     T_n = (p-1) * (q-1)
     e = 65537
+
+    if math.gcd(e, T_n) != 1: # If e is not coprime to T_n, we need to generate new primes
+        return keygen()
+
     d = pow(e, -1, T_n)
 
     return n, e, d
@@ -79,6 +84,8 @@ def main():
     message = "All Denison students should take CS402!"
 
     n, e, d = keygen()
+
+
     print(f"Public key (n, e): ({n}, {e})")
     print(f"Private key (n, d): ({n}, {d})")
 
